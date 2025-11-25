@@ -17,24 +17,33 @@ imageUpload.addEventListener('change', function() {
         fileName.textContent = file.name;
 
         fileName.style.cursor = 'pointer';
-        fileName.onclick = function() 
-        {
+        fileName.onclick = function()  {
         const reader = new FileReader();
         reader.onload = function(e) {
             modal.style.display = "flex"; // use flex to center
             modalImg.src = e.target.result;//target-filereader, result-the URL
-        }//onload only triggers after the entire file has been read successfully.
+            }//onload only triggers after the entire file has been read successfully.
         reader.readAsDataURL(file);//this reads the file and triggers onload
-    }
+        }
 
-    closeModal.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    modal.onclick = function(e) {
-        if(e.target == modal) {
+        closeModal.onclick = function() {
             modal.style.display = "none";
         }
-    }
+
+        modal.onclick = function(e) {
+            if(e.target == modal) {
+                modal.style.display = "none";
+            }
         }
+
+        const formData= new FormData();
+        formData.append("image", file)
+
+        fetch("/upload_image", {method:"POST", body: formData})//built-in JavaScript function that allows you to make HTTP requests    
+        .then(response => response.json())
+        .then(data => {
+        console.log("Server response:", data);
+        })
+        .catch(error => console.error("Error:", error));
+    }
 });
