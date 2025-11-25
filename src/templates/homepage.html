@@ -9,13 +9,24 @@
 <body>
     <header class="top-bar">
         <h1>Recipe Generator</h1>
+        <img src="../static/illustrations/logobg.png" alt="logo" class="logo-img">
     </header>
-    <div class="top-button-container">
-        <button class="left-btn">Upload Image</button>
-        <button class="centre-btn">Scan Image</button>
-    </div>
-    <!--You want the buttons on the same horizontal line, so in the same container-->
-    <img src="../static/illustrations/chef.png" alt="Chef" class="index-img1">
 
+    <div class="upload-section">
+        <button class="left-btn" id="uploadBtn">Upload Image</button>
+        <button class="centre-btn">Scan Image</button>
+        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+    </div>
+    <p id="fileName"></p>
+    <!--You want the buttons on the same horizontal line, so in the same container-->
+    
+    <!-- Modal for image preview -->
+    <div id="modal" class="modal">
+        <span id="closeModal">&times;</span>
+        <img id="modalImg" class="modal-content">
+    </div>
+
+    <img src="../static/illustrations/chefbg.png" alt="Chef" class="index-img1">
+    <script src="../static/js/script.js" defer></script>
 </body>
 </html>

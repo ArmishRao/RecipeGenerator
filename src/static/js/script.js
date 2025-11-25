@@ -1,18 +1,40 @@
-const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
+const uploadBtn=document.getElementById("uploadBtn")
+const imageUpload= document.getElementById("imageUpload")
+const fileName= document.getElementById("fileName")
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+const closeModal = document.getElementById("closeModal");
 
-fileInput.addEventListener('change', function(event) {
-    const [file] = event.target.files;
-    if (file) {
-        preview.src = URL.createObjectURL(file);
-    } else {
-        preview.src = '#';
-    }
+
+uploadBtn.addEventListener('click', function() {
+    imageUpload.click()
 });
 
-// Optional: prevent form submission for demo
-const form = document.getElementById('upload-form');
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert("Form submitted! (In real app, this would go to backend)");
+imageUpload.addEventListener('change', function() {
+    if(this.files && this.files[0]) //ensures the user actually picked a file, allows array of files or js 1
+    {
+        const file = this.files[0];
+        fileName.textContent = file.name;
+
+        fileName.style.cursor = 'pointer';
+        fileName.onclick = function() 
+        {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            modal.style.display = "flex"; // use flex to center
+            modalImg.src = e.target.result;//target-filereader, result-the URL
+        }//onload only triggers after the entire file has been read successfully.
+        reader.readAsDataURL(file);//this reads the file and triggers onload
+    }
+
+    closeModal.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    modal.onclick = function(e) {
+        if(e.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+        }
 });
