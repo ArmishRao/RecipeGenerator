@@ -1,0 +1,5 @@
+myenv/
+
+#build/ folder
+#*.tmp  extension
+#my_secret_key.txt  file

@@ -9,7 +9,7 @@ const closeModal = document.getElementById("closeModal");
 uploadBtn.addEventListener('click', function() {
     imageUpload.click()
 });
-
+ 
 imageUpload.addEventListener('change', function() {
     if(this.files && this.files[0]) //ensures the user actually picked a file, allows array of files or js 1
     {
