@@ -4,6 +4,9 @@ const fileName= document.getElementById("fileName")
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modalImg");
 const closeModal = document.getElementById("closeModal");
+const scanBtn = document.getElementById("scanBtn");
+const scanMsg = document.getElementById("scanMsg");
+let uploadedFilename= "";
 
 
 uploadBtn.addEventListener('click', function() {
@@ -15,6 +18,7 @@ imageUpload.addEventListener('change', function() {
     {
         const file = this.files[0];
         fileName.textContent = file.name;
+        uploadedFilename=file.name;
 
         fileName.style.cursor = 'pointer';
         fileName.onclick = function()  {
@@ -47,3 +51,36 @@ imageUpload.addEventListener('change', function() {
         .catch(error => console.error("Error:", error));
     }
 });
+
+// scanBtn.addEventListener('click', function() {
+//     const fileURL= `/uploads/${uploadedFilename}`;
+//     fetch(fileURL)
+//     .then(response => response.blob())
+//     .then(blob =>  {
+//         const file = new File([blob], uploadedFilename, {type: blob.type});
+
+//         const formData=new FormData()
+//         formData.append('image', file)
+//         fetch('/predict', {method: "POST", body: formData})
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log("Server Response: ", data);
+//         })
+//         .catch(error => console.error("Error:", error));
+//     })
+    
+
+// })
+
+scanBtn.addEventListener("click", function() {
+    const formData= new FormData();
+    formData.append('text', uploadedFilename)
+
+    fetch('/predict', {
+        method: 'POST', 
+        body: formData
+    })
+    .then(response=> response.json())
+    .then(data =>   console.log("Server says: ", data))
+    .catch(error => console.error("Error:", error));
+})

@@ -2,12 +2,12 @@ Python 3.13.1
 Flask 3.1.2
 Werkzeug 3.1.3
 Flask-Cors
-ultralytics
+ultralytics 8.3.232
 torch 
 torchvision 
 torchaudio
 
-#pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 opencv????
 gunicorn==21.2.0

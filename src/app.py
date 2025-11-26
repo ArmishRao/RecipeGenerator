@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask import render_template
+from flask import send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
@@ -25,9 +26,18 @@ def upload_image():
     file.save(full_path)
     return jsonify({"message": "File saved!", "filename": filename})     
 
+@app.route('/uploads/<filename>')
+def access_file(filename):
+    return send_from_directory("uploads", filename)
+
 @app.route('/predict', methods=['POST'])
 def predict():
-    result=model("../uploads/download_2.jpeg")
+    filename=request.form.get('text')
+    if not filename:
+        return jsonify({'error': 'No file recieved'}), 400
+    filepath=os.path.join(folder_path, filename)
+    
+    result=model(filepath)
 
 if __name__ == "__main__":
     app.run(debug=True)
