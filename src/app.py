@@ -26,9 +26,9 @@ def upload_image():
     file.save(full_path)
     return jsonify({"message": "File saved!", "filename": filename})     
 
-@app.route('/uploads/<filename>')
-def access_file(filename):
-    return send_from_directory("uploads", filename)
+# @app.route('/uploads/<filename>')
+# def access_file(filename):
+#     return send_from_directory("uploads", filename)
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -38,6 +38,15 @@ def predict():
     filepath=os.path.join(folder_path, filename)
     
     result=model(filepath)
+
+    result=result[0]#for image 1 incase of multiple images
+    names=result.names#all possible options
+    boxes=result.boxes#actual items
+    cls_ids=boxes.cls.tolist()
+
+    detected_items=[names[int(c)] for c in cls_ids]
+    detected_items=list(set(detected_items))
+    return jsonify({"items": detected_items})   
 
 if __name__ == "__main__":
     app.run(debug=True)

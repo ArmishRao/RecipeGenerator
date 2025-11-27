@@ -81,6 +81,15 @@ scanBtn.addEventListener("click", function() {
         body: formData
     })
     .then(response=> response.json())
-    .then(data =>   console.log("Server says: ", data))
+    .then(data =>   {
+        const list=data.items;
+        const ingredients=document.getElementById("ingredients")
+        ingredients.innerHTML="" //.innerHTML is a property that represents the HTML inside an element.
+        list.forEach(ingredient => {
+            const p=document.createElement('p')
+            p.textContent=ingredient
+            ingredients.appendChild(p)//.appendChild() adds the element as a child of the container.
+        })
+    })
     .catch(error => console.error("Error:", error));
 })
