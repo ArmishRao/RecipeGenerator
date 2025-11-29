@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeGen</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>RecipeGen</h1>
+        </header>
+    </div>
+
+    <div class="side-rectangle">
+       <img src="https://ouritaliantable.com/wp-content/uploads/2022/02/Pasta-Sciue-Sciue-LR-564x752.jpg" alt="Delicious Recipe"/>
+    </div>
+
+    <div class="recipe-input">
+        <h2>Enter Ingredients:</h2>
+        <textarea id="ingredients" placeholder="e.g., chicken, garlic, tomatoes"></textarea>
+        <button onclick="generateRecipe()">Generate Recipe</button>
+
+        <h2>Generated Recipe:</h2>
+        <pre id="output"></pre>
+    </div>
+
+<script>
+function generateRecipe() {
+    const ingredients = document.getElementById("ingredients").value;
+
+    fetch("/generate", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "ingredients=" + encodeURIComponent(ingredients)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("output").textContent = data.recipe;
+    });
+}
+</script>
+
+</body>
+</html>
