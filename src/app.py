@@ -10,15 +10,15 @@ import jax.numpy as jnp
 
 app=Flask(__name__)
 
-model=YOLO('yolov8n.pt')#download/load a pretrained YOLOv8n model
-model.save_pretrained("./models/t5-recipe-generation")
+model_image=YOLO('yolov8n.pt')#download/load a pretrained YOLOv8n model
+model_image.save_pretrained("./models/yolov8n")
 folder_path=os.path.join(os.getcwd(), 'uploads')
 
 # Load model + tokenizer
 model_name = "flax-community/t5-recipe-generation"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = FlaxT5ForConditionalGeneration.from_pretrained(model_name)
-model.save_pretrained("./models/t5-recipe-generation")
+model_recipe = FlaxT5ForConditionalGeneration.from_pretrained(model_name)
+model_recipe.save_pretrained("./models/t5-recipe-generation")
 
 @app.route('/')
 def home():
@@ -34,10 +34,6 @@ def upload_image():
     file.save(full_path)
     return jsonify({"message": "File saved!", "filename": filename})     
 
-# @app.route('/uploads/<filename>')
-# def access_file(filename):
-#     return send_from_directory("uploads", filename)
-
 @app.route('/predict', methods=['POST'])
 def predict():
     filename=request.form.get('text')
@@ -45,7 +41,7 @@ def predict():
         return jsonify({'error': 'No file recieved'}), 400
     filepath=os.path.join(folder_path, filename)
     
-    result=model(filepath)
+    result=model_image(filepath)
 
     result=result[0]#for image 1 incase of multiple images
     names=result.names#all possible options
@@ -67,7 +63,7 @@ def generate_recipe():
     prompt = f"ingredients: {ingredients} recipe:"
 
     inputs = tokenizer(prompt, return_tensors="jax")
-    output_ids = model.generate(
+    output_ids = model_recipe.generate(
         input_ids=inputs["input_ids"],
         max_length=200
     ).sequences
