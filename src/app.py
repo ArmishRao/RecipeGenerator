@@ -10,15 +10,11 @@ import jax.numpy as jnp
 
 app=Flask(__name__)
 
-model_image=YOLO('yolov8n.pt')#download/load a pretrained YOLOv8n model
-model_image.save_pretrained("./models/yolov8n")
 folder_path=os.path.join(os.getcwd(), 'uploads')
+model_image = YOLO("./models/yolov8n")
 
-# Load model + tokenizer
-model_name = "flax-community/t5-recipe-generation"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model_recipe = FlaxT5ForConditionalGeneration.from_pretrained(model_name)
-model_recipe.save_pretrained("./models/t5-recipe-generation")
+model_recipe = FlaxT5ForConditionalGeneration.from_pretrained("./models/t5-recipe-generation")
+tokenizer = AutoTokenizer.from_pretrained("./models/t5-recipe-generation")
 
 @app.route('/')
 def home():
