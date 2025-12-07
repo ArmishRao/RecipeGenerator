@@ -2,8 +2,7 @@ from ultralytics import YOLO
 from transformers import AutoTokenizer, FlaxT5ForConditionalGeneration
 
 # --- YOLOv8 Model ---
-model_image = YOLO('yolov8n.pt') 
-model_image.save_pretrained("./models/yolov8n") 
+model_image = YOLO('models/yolov8n.pt') 
 
 # --- T5 Recipe Model ---
 model_name = "flax-community/t5-recipe-generation"

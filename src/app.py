@@ -13,9 +13,12 @@ app=Flask(__name__)
 folder_path=os.path.join(os.getcwd(), 'uploads')
 model_image = YOLO("./models/yolov8n")
 
+print("Check 1: Loaded YOLO model")
+
 model_recipe = FlaxT5ForConditionalGeneration.from_pretrained("./models/t5-recipe-generation")
 tokenizer = AutoTokenizer.from_pretrained("./models/t5-recipe-generation")
 
+print("Check 2: Loaded T5 Recipe model")
 @app.route('/')
 def home():
     return render_template('homepage.html')
