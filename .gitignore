@@ -1,0 +1,8 @@
+myenv/
+models/
+*.pt
+*.bin
+*.safetensors
+#build/ folder
+#*.tmp  extension
+#my_secret_key.txt  file
