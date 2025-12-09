@@ -27,6 +27,7 @@ def home():
 def upload_image():
     if 'image' not in request.files:
         return jsonify({'error':'No images found in the request.'}), 400
+    print("Uploading Image...")
     file=request.files['image']
     filename=secure_filename(file.filename)
     full_path=os.path.join(folder_path, filename)

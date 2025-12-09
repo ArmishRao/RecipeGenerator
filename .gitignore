@@ -3,7 +3,9 @@ models/
 *.pt
 *.bin
 *.safetensors
-data/dataset/
+data/
+.dvc/
+runs/
 #build/ folder
 #*.tmp  extension
 #my_secret_key.txt  file

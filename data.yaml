@@ -1,0 +1,5 @@
+train: data/dataset/train/
+val: data/dataset/valid/
+test: data/dataset/test/
+names:
+  - ingredient

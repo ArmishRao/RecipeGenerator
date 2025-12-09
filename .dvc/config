@@ -1,0 +1,4 @@
+[core]
+    remote = dagshub-dvc
+['remote "dagshub-dvc"']
+    url = https://dagshub.com/ArmishRao/RecipeGenerator.s3

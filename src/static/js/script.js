@@ -11,6 +11,7 @@ let uploadedFilename= "";
 
 uploadBtn.addEventListener('click', function() {
     imageUpload.click()
+    console.log("Upload button clicked, opening file dialog...");
 });
  
 imageUpload.addEventListener('change', function() {
@@ -46,7 +47,7 @@ imageUpload.addEventListener('change', function() {
         fetch("/upload_image", {method:"POST", body: formData})//built-in JavaScript function that allows you to make HTTP requests    
         .then(response => response.json())
         .then(data => {
-        console.log("Server response:", data);
+        console.log("Server response to image upload:", data);
         })
         .catch(error => console.error("Error:", error));
     }

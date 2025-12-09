@@ -1,0 +1,19 @@
+# params.yaml
+
+dataset:
+  train: data/dataset/train/
+  val: data/dataset/valid/
+  test: data/dataset/test/
+
+training:
+  epochs: 50
+  batch_size: 4
+  img_size: 416
+  lr: 0.01
+
+evaluation:
+  metrics:
+    - precision
+    - recall
+    - mAP50
+    - mAP50-95

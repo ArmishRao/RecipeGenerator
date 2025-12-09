@@ -1,0 +1,12 @@
+stages:
+  train_model:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - params.yaml
+      - data/dataset/train/
+      - data/dataset/valid/
+    outs:
+     - models/yolov8n.pt
+     - models/yolov8n_retrained.pt
+     #this is what the dvc needs to track
