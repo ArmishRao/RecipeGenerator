@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,5 +44,660 @@ function generateRecipe() {
 }
 </script>
 
+</body>
+</html> 
+<--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeGen</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <style>
+        .recipe-input {
+            margin: 50px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+        
+        #ingredients {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #2E8B57;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #267349;
+        }
+        
+        #output {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>RecipeGen</h1>
+        </header>
+    </div>
+
+    <div class="side-rectangle">
+       <img src="https://ouritaliantable.com/wp-content/uploads/2022/02/Pasta-Sciue-Sciue-LR-564x752.jpg" alt="Delicious Recipe"/>
+    </div>
+<!-- Add this at the top of your recipe-input div 
+<div class="recipe-input">
+    <!-- Back Button - Add this line 
+    <button onclick="window.location.href='/'" style="
+        background-color: #8FAD88;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        font-size: 14px;
+    ">← Back to Home</button>
+    
+    <h2>Enter Ingredients:</h2>
+    <textarea id="ingredients" placeholder="e.g., chicken, garlic, tomatoes"></textarea>
+    <button onclick="generateRecipe()">Generate Recipe</button>
+
+    <h2>Generated Recipe:</h2>
+    <pre id="output"></pre>
+</div>
+
+<script>
+// Function to get URL parameters
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+// On page load, check if ingredients are passed in URL
+window.onload = function() {
+    const ingredientsFromUrl = getUrlParameter('ingredients');
+    if (ingredientsFromUrl) {
+        document.getElementById("ingredients").value = ingredientsFromUrl;
+        // Optionally auto-generate recipe
+        // generateRecipe();
+    }
+};
+
+function generateRecipe() {
+    const ingredients = document.getElementById("ingredients").value;
+    
+    if (!ingredients.trim()) {
+        alert("Please enter some ingredients!");
+        return;
+    }
+
+    document.getElementById("output").textContent = "Generating recipe...";
+
+    fetch("/generate", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "ingredients=" + encodeURIComponent(ingredients)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("output").textContent = data.recipe;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("output").textContent = "Error generating recipe. Please try again.";
+    });
+}
+</script>
+
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeGen - Generate Recipe</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Enhanced styles for recipe page */
+        body {
+            background: linear-gradient(135deg, #F6E0CA 0%, #F0D8B8 100%);
+            min-height: 100vh;
+        }
+        
+        .recipe-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .recipe-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #8FAD88;
+        }
+        
+        .recipe-header h2 {
+            color: #2E8B57;
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .back-btn {
+            background: #8FAD88;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #5b8051;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 175, 136, 0.4);
+        }
+        
+        .recipe-input-section {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .recipe-input-section h3 {
+            color: #2E8B57;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        #ingredients {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        #ingredients:focus {
+            border-color: #8FAD88;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(143, 173, 136, 0.2);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .generate-btn, .pdf-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, #2E8B57, #3CB371);
+            color: white;
+            flex: 1;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(46, 139, 87, 0.3);
+        }
+        
+        .recipe-output-section {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        .recipe-output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .recipe-output-header h3 {
+            color: #2E8B57;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .pdf-btn {
+            background: linear-gradient(135deg, #8B0000, #DC143C);
+            color: white;
+            padding: 12px 24px;
+        }
+        
+        .pdf-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(139, 0, 0, 0.3);
+        }
+        
+        .pdf-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #output {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            border-left: 5px solid #8FAD88;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            color: #2E8B57;
+        }
+        
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #8FAD88;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .recipe-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .recipe-image img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .recipe-container {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            .recipe-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .recipe-header h2 {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .recipe-output-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="recipe-container">
+        <div class="recipe-header">
+            <h2><i class="fas fa-utensils"></i> Recipe Generator</h2>
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+        
+        <div class="recipe-input-section">
+            <h3><i class="fas fa-edit"></i> Enter Your Ingredients</h3>
+            <p style="color: #666; margin-bottom: 15px;">Separate ingredients with commas</p>
+            <textarea id="ingredients" placeholder="e.g., chicken breast, garlic cloves, fresh tomatoes, olive oil, salt, pepper"></textarea>
+            
+            <div class="action-buttons">
+                <button class="generate-btn" onclick="generateRecipe()">
+                    <i class="fas fa-magic"></i> Generate Recipe
+                </button>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Creating your delicious recipe...</p>
+        </div>
+        
+        <div class="recipe-output-section" id="outputSection" style="display: none;">
+            <div class="recipe-output-header">
+                <h3><i class="fas fa-book-open"></i> Your Recipe</h3>
+                <button class="pdf-btn" id="pdfBtn" onclick="downloadPDF()" disabled>
+                    <i class="fas fa-file-pdf"></i> Save as PDF
+                </button>
+            </div>
+            
+        <div class="recipe-image" id="recipeImageContainer">
+    <div id="imageLoading" class="image-loading">
+        <div class="loading-spinner-small"></div>
+        <p>Loading recipe image...</p>
+    </div>
+    <img src="../static/images/placeholder.jpg" 
+         alt="Recipe will appear here"
+         id="recipeImage"
+         style="display: none;">
+</div>
+            <div style="text-align: center; margin: 20px 0;">
+    <button onclick="testImageAPI()" style="
+        background: #8FAD88;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    ">
+        Test Image API
+    </button>
+</div>
+            <pre id="output"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Store recipe data for PDF generation
+        let currentRecipeData = null;
+        
+        // On page load, check if ingredients are passed in URL
+        window.onload = function() {
+            const ingredientsFromUrl = getUrlParameter('ingredients');
+            if (ingredientsFromUrl) {
+                document.getElementById("ingredients").value = ingredientsFromUrl;
+                // Auto-generate recipe if ingredients are passed
+                setTimeout(() => generateRecipe(), 500);
+            }
+        };
+        
+function generateRecipe() {
+    const ingredients = document.getElementById("ingredients").value.trim();
+    
+    if (!ingredients) {
+        alert("Please enter some ingredients!");
+        document.getElementById("ingredients").focus();
+        return;
+    }
+    
+    // Show loading, hide output
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("outputSection").style.display = "none";
+    document.getElementById("pdfBtn").disabled = true;
+    
+    // Clear previous output and reset image
+    document.getElementById("output").textContent = "";
+    const recipeImage = document.getElementById('recipeImage');
+    recipeImage.src = "https://ouritaliantable.com/wp-content/uploads/2022/02/Pasta-Sciue-Sciue-LR-564x752.jpg";
+    
+    fetch("/generate", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "ingredients=" + encodeURIComponent(ingredients)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Hide loading
+        document.getElementById("loading").style.display = "none";
+        
+        // Store recipe data for PDF
+        currentRecipeData = {
+            title: "Generated Recipe",
+            ingredients: ingredients.split(',').map(item => item.trim()),
+            recipe: data.recipe
+        };
+        
+        // Display recipe
+        document.getElementById("output").textContent = data.recipe;
+        document.getElementById("outputSection").style.display = "block";
+        document.getElementById("pdfBtn").disabled = false;
+        
+        // Fetch and display recipe image (PASS THE CORRECT PARAMETERS)
+        fetchRecipeImage(ingredients, data.recipe);
+        
+        // Scroll to recipe
+        document.getElementById("outputSection").scrollIntoView({ behavior: 'smooth' });
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("loading").style.display = "none";
+        alert("Error generating recipe. Please try again.");
+    });
+}
+function fetchRecipeImage(ingredients, recipeText) {
+    const recipeImage = document.getElementById('recipeImage');
+    const imageLoading = document.getElementById('imageLoading');
+    
+    // Show loading state
+    if (imageLoading) imageLoading.style.display = 'block';
+    recipeImage.style.display = 'none';
+    
+    // Extract recipe title from recipe text
+    let recipeTitle = "Generated Recipe";
+    if (recipeText) {
+        // Look for title in the recipe
+        const lines = recipeText.split('\n');
+        for (let line of lines) {
+            if (line.toLowerCase().includes('title:')) {
+                recipeTitle = line.split(':')[1]?.trim() || "Generated Recipe";
+                break;
+            } else if (line.trim() && line.length < 50 && !line.toLowerCase().includes('ingredient')) {
+                recipeTitle = line.trim();
+                break;
+            }
+        }
+    }
+    
+    // Prepare ingredients array
+    const ingredientsArray = ingredients.split(',').map(item => item.trim()).filter(item => item);
+    
+    console.log('=== DEBUG: Fetching Recipe Image ===');
+    console.log('Recipe Title:', recipeTitle);
+    console.log('Ingredients:', ingredientsArray);
+    console.log('Recipe Preview:', recipeText.substring(0, 100) + '...');
+    
+    fetch('/get_recipe_image', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            title: recipeTitle,
+            ingredients: ingredientsArray
+        })
+    })
+    .then(response => {
+        console.log('Image API Response Status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('=== DEBUG: Image API Response ===');
+        console.log('Success:', data.success);
+        console.log('Image URL:', data.image_url);
+        console.log('Source:', data.source);
+        console.log('Error:', data.error);
+        
+        // Hide loading
+        if (imageLoading) imageLoading.style.display = 'none';
+        recipeImage.style.display = 'block';
+        
+        if (data.success && data.image_url) {
+            // Create a new image to test loading
+            const testImg = new Image();
+            testImg.onload = function() {
+                console.log('Image loaded successfully from:', data.source);
+                recipeImage.src = data.image_url;
+                recipeImage.alt = recipeTitle + ' - ' + data.source;
+                
+                // Show source info on the page
+                const sourceInfo = document.createElement('div');
+                sourceInfo.className = 'image-source';
+                sourceInfo.innerHTML = `<small>Image source: ${data.source}</small>`;
+                sourceInfo.style.textAlign = 'center';
+                sourceInfo.style.color = '#666';
+                sourceInfo.style.marginTop = '10px';
+                
+                // Remove previous source info if exists
+                const prevSource = document.querySelector('.image-source');
+                if (prevSource) prevSource.remove();
+                
+                recipeImage.parentNode.appendChild(sourceInfo);
+            };
+            testImg.onerror = function() {
+                console.log('Image failed to load, using fallback');
+                recipeImage.src = "https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80";
+                recipeImage.alt = "Recipe Image";
+            };
+            testImg.src = data.image_url;
+        } else {
+            console.log('API returned unsuccessful, using fallback');
+            recipeImage.src = "https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80";
+            recipeImage.alt = "Recipe Image";
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching recipe image:', error);
+        
+        // Hide loading, show image with fallback
+        if (imageLoading) imageLoading.style.display = 'none';
+        recipeImage.style.display = 'block';
+        recipeImage.src = "https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80";
+        recipeImage.alt = "Fallback Recipe Image";
+    });
+}
+function downloadPDF() {
+    if (!currentRecipeData) {
+        alert("No recipe data available to save as PDF!");
+        return;
+    }
+    
+    // Show loading state
+    const pdfBtn = document.getElementById("pdfBtn");
+    const originalText = pdfBtn.innerHTML;
+    pdfBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+    pdfBtn.disabled = true;
+    
+    fetch('/generate_pdf_simple', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(currentRecipeData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.pdf_base64) {
+            // Create download link
+            const link = document.createElement('a');
+            link.href = 'data:application/pdf;base64,' + data.pdf_base64;
+            link.download = data.filename || 'recipe.pdf';
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert("PDF downloaded successfully!");
+        } else {
+            throw new Error(data.error || 'Failed to generate PDF');
+        }
+    })
+    .catch(error => {
+        console.error("PDF generation error:", error);
+        alert("Failed to generate PDF: " + error.message);
+    })
+    .finally(() => {
+        // Reset button
+        pdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Save as PDF';
+        pdfBtn.disabled = false;
+    });
+}
+    </script>
 </body>
 </html>

@@ -9,3 +9,4 @@ jaxlib
 flax
 dvc
 mlflow == 3.7.0
+reportlab
